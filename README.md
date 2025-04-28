@@ -54,7 +54,7 @@ do confirm
 
 ```
 configure
-hostname ISP
+hostname ISP-rtr.it-sirius.any
 ```
 
 ДЛЯ УДАЛЕНИЯ SHIFT + BACKSPACE
@@ -190,7 +190,7 @@ do confirm
 
 ```
 user add name=net_admin password=P@ssword group=full
-system identity set name=First-router
+system identity set name=First-rtr.it-sirius.any
 ```
 ### Удаляем адреса
 ```
@@ -236,6 +236,10 @@ routing ospf network add area=backbone network=192.168.200.0/26
 routing ospf network add area=backbone network=192.168.99.0/26
 routing ospf interface add interface=ether1 network-type=point-to-point
 routing ospf interface set [find where interface=ether1] authentication=simple authentication-key=Simple12
+routing ospf interface add interface=ether2 network-type=point-to-point
+routing ospf interface set [find where interface=ether2] authentication=simple authentication-key=Simple12
+routing ospf interface add interface=ether3 network-type=point-to-point
+routing ospf interface set [find where interface=ether3] authentication=simple authentication-key=Simple12
 ```
 
 ### РАЗРЕШАЕМ ВСЕ ПРАВИЛА ФАЙРВОЛЛ НА МИРОКТИКЕ
@@ -269,7 +273,7 @@ ip dhcp-server add address-pool=dhcp-pool interface=ether3 disabled=no name=loca
 
 ```
 user add name=net_admin password=P@ssword group=full
-system identity set name=Second-RTR
+system identity set name=Second-rtr.it-sirius.any
 
 ip address print - вывод настроек ip адресов, если есть удаляем
 
@@ -286,7 +290,7 @@ ip dhcp-client remove numbers=
 ip service set ssh port=22 address=0.0.0.0/0 disable=no
 ```
 
-### ЗАДАЕМ IP-ШНИК НА FIRST-RTR В СТОРОНУ ELTEX ISP
+### ЗАДАЕМ IP-ШНИК НА Second-RTR В СТОРОНУ ELTEX ISP
 
 ```
 ip address add address=172.16.5.2/28 interface=ether1
@@ -297,7 +301,7 @@ ip address add address=172.16.5.2/28 interface=ether1
 ip route add dst-address=0.0.0.0/0 gateway=172.16.5.1
 ```
 
-### НАСТРОЙКА OSPF НА FIRST-RTR
+### НАСТРОЙКА OSPF НА Second-RTR
 
 ```
 routing ospf instance add name=ospf-instance-2 router-id=3.3.3.3
@@ -305,6 +309,8 @@ routing ospf network add area=backbone network=172.16.5.0/28
 routing ospf network add area=backbone network=192.168.6.0/27
 routing ospf interface add interface=ether1 network-type=point-to-point
 routing ospf interface set [find where interface=ether1] authentication=simple authentication-key=Simple12
+routing ospf interface add interface=ether2 network-type=point-to-point
+routing ospf interface set [find where interface=ether2] authentication=simple authentication-key=Simple12
 ```
 
 ### РАЗРЕШАЕМ ВСЕ ПРАВИЛА ФАЙРВОЛЛ НА МИРОКТИКЕ
