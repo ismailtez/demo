@@ -186,68 +186,73 @@ do confirm
 
 ## 3. НАСТРОЙКА MIKROTIK FIRST-RTR
 
-Настраиваем имя
+### Настраиваем имя
 
+```
 user add name=net_admin password=P@ssword group=full
 system identity set name=First-router
-
-
+```
+### Удаляем адреса
+```
 ip address print - вывод настроек ip адресов, если есть удаляем
-
 ip address remove numbers=0 число удаления
-
 ip dhcp-client print
-
 ip dhcp-client remove numbers=0
-
-
 ip dhcp-server print
-
 ip dhcp-server remove numbers=0
-
-НАВЕШИВАЕМ АДРЕС НА ИНТЕРФЕЙС ДЛЯ SSH ПОДКЛЮЧЕНИЯ
-
-ip address add address=172.16.98.1/24 interface=ether4
-
+```
 
 ### НАСТРОЙКА SSH  НА MIKROTIK FIRST-router
 
+```
 ip service set ssh port=22 address=0.0.0.0/0 disable=no
+```
 
 С АСТРЫ ПОДКЛЮЧАЕМСЯ НА
 
+```
 ssh net_user@172.16.98.1
-
+```
 
 ### ЗАДАЕМ IP-ШНИК НА FIRST-RTR В СТОРОНУ ELTEX ISP
-ip address add address=172.16.4.2/28 interface=ether1
 
+```
+ip address add address=172.16.4.2/28 interface=ether1
+```
 
 ### ПРОПИСЫВАЕМ МАРШРУТ ПО УМОЛЧАНИЮ
-ip route add dst-address=0.0.0.0/0 gateway=172.16.4.1
 
+```
+ip route add dst-address=0.0.0.0/0 gateway=172.16.4.1
+```
 
 ### НАСТРОЙКА OSPF НА FIRST-RTR
 
+```
 routing ospf instance add name=ospf-instance-1 router-id=2.2.2.2
 routing ospf network add area=backbone network=172.16.4.0/28
 routing ospf interface add interface=ether1 network-type=point-to-point
 routing ospf interface set [find where interface=ether1] authentication=simple authentication-key=Simple12
-
+```
 
 ### РАЗРЕШАЕМ ВСЕ ПРАВИЛА ФАЙРВОЛЛ НА МИРОКТИКЕ
 
+```
 ip firewall filter add chain=input action=accept place-before=0
 ip firewall filter add chain=forward  action=accept place-before=0
 ip firewall filter add chain=output  action=accept place-before=0
 ip firewall filter print
+```
 
 ### ПРОВЕРЯЕМ СОСЕДЕЙ OSPF
 
+```
 routing ospf neighbor print
+```
 
 ### НАСТРОЙКА DHCP  НА FIRST-RTR
 
+```
 ip address add address=192.168.100.1/26 interface=ether2
 ip address add address=192.168.200.1/28 interface=ether3
 ip pool add name=dhcp-pool ranges=192.168.200.2-192.168.200.14
@@ -255,9 +260,11 @@ interface bridge port remove [find interface=ether3]
 
 ip dhcp-server network add address=192.168.200.0/28 gateway=192.168.200.1 dns-server=8.8.8.8
 ip dhcp-server add address-pool=dhcp-pool interface=ether3 disabled=no name=local-dhcp
+```
 
 ## 4. НАСТРОЙКА MIKROTIK SECOND-RTR
 
+```
 user add name=net_admin password=P@ssword group=full
 system identity set name=Second-RTR
 
@@ -268,6 +275,7 @@ ip address remove numbers= число удаления
 ip dhcp-client print
 
 ip dhcp-client remove numbers=
+```
 
 ### ВКЛЮЧАЕМ SSH НА SECOND-RTR
 
