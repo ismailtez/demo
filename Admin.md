@@ -1,21 +1,20 @@
-## 1. Подключение к ISP (Eltex)
+### 1. Заходим на First-CLI
 
-### Заходим на First-CLI
-
-Втыкаем сериал и адаптер интернета в клиента
-
-Заходим на клиента под кредами
+Меняем имя машин
 
 ```
-логин - astradm
-пароль - Sirius2025!
+hostname set-hostname First-SRV.it-sirius.any
 ```
 
-Далее alt + t открываем терминал
+Добавление пользователя 
 
 ```
-sudo su
-nano /etc/apt/sourcec.list
+useradd sshuser -u 1010
+passwd sshuser - задаст новый пароль
+sudo nano /etc/sudoers
+и добавляем в конец файла строку:
+%sshuser ALL=(ALL:ALL) NOPASSWD: ALL
+
 ```
 Комментим первую строку и РАССКОМЕНЧИВАЕМ ВТОРУЮ
 
@@ -282,41 +281,32 @@ ip dhcp-client remove numbers=
 
 ### ВКЛЮЧАЕМ SSH НА SECOND-RTR
 
-```
 ip service set ssh port=22 address=0.0.0.0/0 disable=no
-```
+
 
 ### ЗАДАЕМ IP-ШНИК НА FIRST-RTR В СТОРОНУ ELTEX ISP
-
-```
 ip address add address=172.16.5.2/28 interface=ether1
-```
+
 
 ### ПРОПИСЫВАЕМ МАРШРУТ ПО УМОЛЧАНИЮ
-```
 ip route add dst-address=0.0.0.0/0 gateway=172.16.5.1
-```
+
 
 ### НАСТРОЙКА OSPF НА FIRST-RTR
 
-```
 routing ospf instance add name=ospf-instance-2 router-id=3.3.3.3
 routing ospf network add area=backbone network=172.16.5.0/28
-routing ospf network add area=backbone network=192.168.6.0/27
 routing ospf interface add interface=ether1 network-type=point-to-point
 routing ospf interface set [find where interface=ether1] authentication=simple authentication-key=Simple12
-```
+
 
 ### РАЗРЕШАЕМ ВСЕ ПРАВИЛА ФАЙРВОЛЛ НА МИРОКТИКЕ
 
-```
 ip firewall filter add chain=input action=accept place-before=0
 ip firewall filter add chain=forward  action=accept place-before=0
 ip firewall filter add chain=output  action=accept place-before=0
 ip firewall filter print
-```
 
 ### ПРОВЕРЯЕМ СОСЕДЕЙ OSPF
-```
+
 routing ospf neighbor print
-```
