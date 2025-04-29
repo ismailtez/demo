@@ -1,0 +1,15 @@
+$TTL    86400
+@       IN      SOA     first-srv.it-sirius.any. admin.it-sirius.any. (
+                        2024042601      ; Serial
+                        3600            ; Refresh
+                        1800            ; Retry
+                        604800          ; Expire
+                        86400           ; Minimum TTL
+)
+
+; NS записи
+@       IN      NS      first-srv.it-sirius.any.
+
+; PTR записи
+1       IN      PTR     first-rtr.it-sirius.any.
+14      IN      PTR     first-cli.it-sirius.any.
