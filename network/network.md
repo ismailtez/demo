@@ -326,3 +326,36 @@ ip firewall filter print
 ```
 routing ospf neighbor print
 ```
+
+
+
+
+
+
+
+## 5. ИСПОЛЬЗОВАНИЕ NMCLI ДЛЯ НАСТРОЙКИ АДРЕСОВ НА МАШИНАХ
+
+```
+nmcli connection show
+nmcli connection modify "Проводное подключение 1" ipv4.addresses 192.168.100.2/26
+nmcli connection modify "Проводное соединение 1" ipv4.gateway 192.168.100.1
+nmcli connection modify "Проводное соединение 1" ipv4.dns "8.8.8.8 8.8.4.4"
+nmcli connection modify "Проводное соединение 1" ipv4.method manual
+nmcli connection down "Проводное соединение 1"
+nmcli connection up "Проводное соединение 1"
+```
+
+
+
+### Создание нового подключения (опционально)
+Если вам нужно создать новое подключение вместо изменения существующего, используйте:
+
+```
+nmcli connection add type ethernet ifname eth0 con-name "MyConnection" ipv4.addresses 192.168.1.100/24 ipv4.gateway 192.168.1.1 ipv4.dns "8.8.8.8 8.8.4.4" ipv4.method manual
+```
+
+
+### Удаление подключения (опционально)
+```
+nmcli connection delete "Проводное соединение 1"
+```
