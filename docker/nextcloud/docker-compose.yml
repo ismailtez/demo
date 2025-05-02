@@ -1,15 +1,5 @@
 version: '2'
 
-networks:
-  macvlan_1:
-    driver: macvlan
-    driver_opts:
-      parent: enp0s3
-    ipam:
-      config:
-        - subnet: 192.168.67.0/24
-          gateway: 192.168.67.2
-
 volumes:
   twnextcloud:
   db:
@@ -21,9 +11,6 @@ services:
     volumes:
       - /opt:/opt
       - db:/var/lib/mysql
-    networks:
-      macvlan_1:
-        ipv4_address: 192.168.67.4
     environment:
       - MYSQL_ROOT_PASSWORD=P@ssw0rd
       - MYSQL_PASSWORD=P@ssw0rd
@@ -37,9 +24,6 @@ services:
       - "8081:80"
     links:
       - db
-    networks:
-      macvlan_1:
-        ipv4_address: 192.168.67.5
     volumes:
       - /opt:/opt
       - twnextcloud:/var/www/html
