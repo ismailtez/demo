@@ -1,5 +1,29 @@
 ## НАСТРОЙКА CUPS ПРИНТЕРА PDF
 
+
+СЕРВЕР
+
+1. Редактируем файл sudo nano /etc/cups/cupsd.conf
+2. Заменяем
+
+```
+Listen *:631
+
+и везде где <> знаки, пишем в конце - Allow all
+
+<Location />
+  Order allow,deny
+  Allow all
+</Location>
+```
+
+3. sudo systemctl restart cups
+
+
+
+
+КЛИЕНТ
+
 1. Открываем на http://192.168.100.2:631
 2. Переходим сверху на вкладу ````Администрирование```
 3. Вводим логин astradm и пароль Sirius2025! КОРОЧЕ ОТ УЧЕТКИ ПОЛЬЗОВАТЕЛЯ
