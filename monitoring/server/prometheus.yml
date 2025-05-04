@@ -5,15 +5,13 @@ scrape_configs:
   - job_name: 'node_exporter_second'
     static_configs:
       - targets:
-        - 'Second-SRV:9100'  # IP-адрес и порт Node Exporter на Second-SRV
+        - '192.168.67.3:9100'  # IP-адрес и порт Node Exporter на Second-SRV
 
-scrape_configs:
   - job_name: 'node_exporter_first'
     static_configs:
       - targets:
-          - 'localhost:9101'  # Порт для Node Exporter на хосте
+          - '192.168.65.3:9101'  # Порт для Node Exporter на хосте
 
-  - job_name: 'mikrotik'
+  - job_name: 'mktxp'
     static_configs:
-      - targets:
-          - 'localhost:9102'  # Порт для MikroTik Exporter на хосте
+      - targets: ['mktxp:49090']

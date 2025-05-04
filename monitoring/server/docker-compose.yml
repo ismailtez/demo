@@ -10,9 +10,6 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-    depends_on:
-      - node-exporter
-      - mikrotik-exporter
 
   grafana:
     image: grafana/grafana:8.5.0
@@ -21,8 +18,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: "P@ssw0rd"  # Установите ваш пароль
     ports:
       - "3000:3000"
-    depends_on:
-      - prometheus
     networks:
       - monitoring
 
@@ -34,16 +29,13 @@ services:
     networks:
       - monitoring
 
-  mikrotik-exporter:
-    image: vitalidze/mikrotik-exporter
-    container_name: mikrotik-exporter
-    environment:
-      - ROUTER_API_HOST=192.168.65.2      # IP адрес устройства MikroTik
-      - ROUTER_API_PORT=8728              # Порт API MikroTik (по умолчанию 8728)
-      - ROUTER_API_USER=admin             # Имя пользователя для подключения
-      - ROUTER_API_PASSWORD=12345678 # Пароль для подключения
+  mktxp:
+    image: ghcr.io/akpw/mktxp:latest
+    container_name: mktxp
+    volumes:
+      - ./mktxp.conf:/home/mktxp/mktxp.conf:ro
     ports:
-      - "9102:9100"  # Изменили порт, чтобы избежать конфликта (хост:порт контейнера)
+      - "49090:49090"
     networks:
       - monitoring
 
