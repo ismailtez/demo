@@ -124,7 +124,7 @@ do confirm
 
 ### 2.2 МАРШРУТ ПО УМОЛЧАНИЮ ДЛЯ ПОДСЕТЕЙ FIRST И SECOND
 ```
-ip route 0.0.0.0/0 10.23.68.74
+ip route 0.0.0.0/0 10.23.68.1
 ```
 
 ### 2.3 НАСТРОЙКА OSPF НА ISP
@@ -191,6 +191,8 @@ do confirm
 ```
 user add name=net_admin password=P@ssword group=full
 system identity set name=First-rtr.it-sirius.any
+/system clock set time-zone-name=Europe/Moscow
+/system clock print
 ```
 ### Удаляем адреса
 ```
@@ -232,7 +234,7 @@ ip route add dst-address=0.0.0.0/0 gateway=172.16.4.1
 routing ospf instance add name=ospf-instance-1 router-id=2.2.2.2
 routing ospf network add area=backbone network=172.16.4.0/28
 routing ospf network add area=backbone network=192.168.100.0/26
-routing ospf network add area=backbone network=192.168.200.0/26
+routing ospf network add area=backbone network=192.168.200.0/28
 routing ospf network add area=backbone network=192.168.99.0/26
 routing ospf interface add interface=ether1 network-type=point-to-point
 routing ospf interface set [find where interface=ether1] authentication=simple authentication-key=Simple12
@@ -269,11 +271,28 @@ ip dhcp-server network add address=192.168.200.0/28 gateway=192.168.200.1 dns-se
 ip dhcp-server add address-pool=dhcp-pool interface=ether3 disabled=no name=local-dhcp
 ```
 
+### ПРОБРОС ПОРТОВ 2024 ДЛЯ FIRST-SRV
+
+```
+/ip firewall nat add chain=dstnat protocol=tcp dst-port=2024 action=dst-nat to-address=192.168.100.2 to-port=2024
+```
+### ДОБАВЛЕНИЕ В ФАЙЕРВОЛЛ
+```
+/ip firewall filter add \
+    chain=input \
+    protocol=tcp \
+    dst-port=2024 \
+    action=accept \
+    comment="Allow port 2024 for NTP/Custom service"
+
+```
 ## 4. НАСТРОЙКА MIKROTIK SECOND-RTR
 
 ```
 user add name=net_admin password=P@ssword group=full
 system identity set name=Second-rtr.it-sirius.any
+/system clock set time-zone-name=Europe/Moscow
+/system clock print
 
 ip address print - вывод настроек ip адресов, если есть удаляем
 
@@ -328,9 +347,21 @@ routing ospf neighbor print
 ```
 
 
+### ПРОБРОС ПОРТОВ 8080 ДЛЯ WIKI И 2024
 
-
-
+```
+/ip firewall nat add chain=dstnat protocol=tcp dst-port=80 action=dst-nat to-address=192.168.6.2 to-port=8080
+/ip firewall nat add chain=dstnat protocol=tcp dst-port=2024 action=dst-nat to-address=192.168.6.2 to-port=2024
+```
+### ДОБАВЛЕНИЕ В ФАЙЕРВОЛЛ
+```
+/ip firewall filter add \
+    chain=input \
+    protocol=tcp \
+    dst-port=80,2024 \
+    action=accept \
+    comment="Open ports for services"
+```
 
 
 ## 5. ИСПОЛЬЗОВАНИЕ NMCLI ДЛЯ НАСТРОЙКИ АДРЕСОВ НА МАШИНАХ
