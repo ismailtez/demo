@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEVICE="/dev/sda"
-MOUNT_DIR="/srv/nfsshare"
+MOUNT_DIR="/srv/nfs"
 
 # Получаем список свободных пространств
 echo "[+] Ищем самый большой свободный блок..."
