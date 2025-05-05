@@ -52,7 +52,7 @@ echo "UUID=$UUID $MOUNT_DIR ext4 defaults 0 0" | sudo tee -a /etc/fstab
 sudo apt update
 sudo apt install -y nfs-kernel-server
 
-echo "$MOUNT_DIR 192.168.100.0/24(rw,nohide,all_squash,no_subtree_check)" | sudo tee -a /etc/exports
+echo "$MOUNT_DIR 192.168.100.0/26(rw,nohide,all_squash,no_subtree_check)" | sudo tee -a /etc/exports
 
 sudo systemctl restart nfs-kernel-server
 sudo systemctl enable nfs-kernel-server
