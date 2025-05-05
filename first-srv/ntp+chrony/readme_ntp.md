@@ -6,9 +6,12 @@
 /system/ntp/client/servers/add address=0.europe.pool.ntp.org
 ```
 ```
-/system/clock/set time-zone-name=Europe/London
+/system/clock/set time-zone-name=Europe/Moscow
 ```
-
+НА ЭЛТЕКС
+```
+clock timezone gmt +7
+```
 ИЛИ
 ```
 /system ntp client set \
