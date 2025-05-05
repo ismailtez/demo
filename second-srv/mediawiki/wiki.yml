@@ -10,7 +10,7 @@ services:
       - db
     volumes:
       - images:/var/www/html/images
-      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+      - LocalSettings.php:/var/www/html/LocalSettings.php
   db:
     container_name: db
     image: mariadb

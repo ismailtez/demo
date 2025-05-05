@@ -1,0 +1,12 @@
+options {
+    directory "/var/cache/bind";
+    recursion yes;  // Разрешить рекурсивные запросы (для кэширующего DNS)
+    allow-query { any; };  // Разрешить запросы от всех (или укажите конкретные IP)
+    forwarders {
+        8.8.8.8;  // Google DNS (или ваш провайдерский DNS)
+        8.8.4.4;
+    };
+    dnssec-validation auto;
+    listen-on { any; };  // Слушать на всех интерфейсах
+    listen-on-v6 { any; };
+};

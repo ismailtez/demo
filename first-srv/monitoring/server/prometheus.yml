@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node_exporter_second'
+    static_configs:
+      - targets:
+        - '192.168.6.2:9100'  # IP-адрес и порт Node Exporter на Second-SRV
+
+  - job_name: 'node_exporter_first'
+    static_configs:
+      - targets:
+          - '192.168.100.2:9101'  # Порт для Node Exporter на хосте
+
+  - job_name: 'mktxp'
+    static_configs:
+      - targets: ['mktxp:49090']

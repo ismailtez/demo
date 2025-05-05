@@ -1,0 +1,30 @@
+zone "it-sirius.any" {
+    type master;
+    file "/etc/bind/db.it-sirius.any";
+    allow-transfer { none; };
+};
+
+zone "4.16.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.4.16.172";
+};
+
+zone "5.16.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.5.16.172";
+};
+
+zone "100.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.100.168.192";
+};
+
+zone "200.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.200.168.192";
+};
+
+zone "6.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.6.168.192";
+};

@@ -1,0 +1,28 @@
+$TTL    86400
+@       IN      SOA     first-srv.it-sirius.any. admin.it-sirius.any. (
+                        2024042601      ; Serial
+                        3600            ; Refresh
+                        1800            ; Retry
+                        604800          ; Expire
+                        86400           ; Minimum TTL
+)
+
+; NS записи
+@       IN      NS      first-srv.it-sirius.any.
+
+; A записи
+first-srv       IN      A       192.168.100.2
+
+first-rtr       IN      A       172.16.4.2
+first-rtr       IN      A       192.168.100.1
+first-rtr       IN      A       192.168.200.1
+
+second-rtr      IN      A       172.16.5.2
+second-rtr      IN      A       192.168.6.1
+
+first-cli       IN      A       192.168.200.14
+second-srv      IN      A       192.168.6.2
+
+; CNAME записи
+moodle          IN      CNAME   second-srv.it-sirius.any.
+wiki            IN      CNAME   second-srv.it-sirius.any.
