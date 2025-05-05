@@ -49,6 +49,20 @@ if ($fromhost-ip != "127.0.0.1" and $hostname != "First-SRV") then {
 & stop
 ```
 
+```
+sudo nano /etc/logrotate.d/rsyslog-remote
+/opt/*.log {
+    weekly
+    missingok
+    rotate 4
+    compress
+    delaycompress
+    notifempty
+    minsize 10M
+    create 0640 root root
+}
+```
+
 ПЕРЕЗАПУСКАЕМ СЛУЖБУ
 
 ```
