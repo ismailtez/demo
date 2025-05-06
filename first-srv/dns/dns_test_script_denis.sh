@@ -18,29 +18,29 @@ zone "it-sirius.any" {
         file "/etc/bind/zones/db.it-sirius.any";
 };
 
-zone "63.168.192.in-addr.arpa" {
+zone "4.16.172.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.63.168.192";
+        file "/etc/bind/zones/db.4.16.172";
 };
 
-zone "64.168.192.in-addr.arpa" {
+zone "5.16.172.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.64.168.192";
+        file "/etc/bind/zones/db.5.16.172";
 };
 
-zone "67.168.192.in-addr.arpa" {
+zone "6.168.192.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.67.168.192";    
+        file "/etc/bind/zones/db.6.168.192";    
 };
 
-zone "65.168.192.in-addr.arpa" {
+zone "100.168.192.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.65.168.192";
+        file "/etc/bind/zones/db.100.168.192";
 };
 
-zone "66.168.192.in-addr.arpa" {
+zone "200.168.192.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.66.168.192";
+        file "/etc/bind/zones/db.200.168.192";
 };
 EOF
 
@@ -50,11 +50,11 @@ options {
         directory "/var/cache/bind";
         recursion yes;
         allow-recursion {
-                192.168.63.0/24;
-                192.168.64.0/24;
-                192.168.67.0/24;
-                192.168.65.0/24;
-                192.168.66.0/24;
+                172.16.4.0/28;
+                172.16.5.0/28;
+                192.168.6.0/27;
+                192.168.100.0/26;
+                192.168.200.0/28;
         };
 
         forwarders {
@@ -86,22 +86,22 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      first-srv.it-sirius.any.
-first-srv       IN      A       192.168.65.3
-first-rtr       IN      A       192.168.65.2
-first-rtr       IN      A       192.168.63.3
-first-rtr       IN      A       192.168.66.2
-first-cli       IN      A       192.168.66.14
-second-rtr      IN      A       192.168.64.3
-second-rtr      IN      A       192.168.67.2
-second-srv      IN      A       192.168.67.3
-moodle          IN      CNAME   first-srv.it-sirius.any.
-wiki            IN      CNAME   second-srv.it-sirius.any.
+first-srv       IN      A       192.168.100.2
+first-rtr       IN      A       192.168.100.1
+first-rtr       IN      A       172.16.4.2
+first-rtr       IN      A       192.168.200.1
+first-cli       IN      A       192.168.200.14
+second-rtr      IN      A       172.16.5.2
+second-rtr      IN      A       192.168.6.1
+second-srv      IN      A       192.168.6.2
+moodle          IN      CNAME   first-rtr.it-sirius.any.
+wiki            IN      CNAME   first-rtr.it-sirius.any.
 @       IN      AAAA    ::1
 EOF
 )"
 
 # Повторим для остальных зон
-add_zone_file db.63.168.192 "$(cat << 'EOF'
+add_zone_file db.4.16.172 "$(cat << 'EOF'
 $TTL    604800
 @       IN      SOA     it-sirius.any. admin.it-sirius.any. (
                               1
@@ -111,25 +111,11 @@ $TTL    604800
                          604800 )
 ;
 @       IN      NS      first-srv.it-sirius.any.
-3       IN      PTR     first-rtr.it-sirius.any.
+2       IN      PTR     first-rtr.it-sirius.any.
 EOF
 )"
 
-add_zone_file db.64.168.192 "$(cat << 'EOF'
-$TTL    604800
-@       IN      SOA     it-sirius.any. admin.it-sirius.any. (
-                              1
-                         604800
-                          86400
-                        2419200
-                         604800 )
-;
-@       IN      NS      first-srv.it-sirius.any.
-3       IN      PTR     second-rtr.it-sirius.any.
-EOF
-)"
-
-add_zone_file db.67.168.192 "$(cat << 'EOF'
+add_zone_file db.5.16.172 "$(cat << 'EOF'
 $TTL    604800
 @       IN      SOA     it-sirius.any. admin.it-sirius.any. (
                               1
@@ -140,11 +126,10 @@ $TTL    604800
 ;
 @       IN      NS      first-srv.it-sirius.any.
 2       IN      PTR     second-rtr.it-sirius.any.
-3       IN      PTR     second-srv.it-sirius.any.
 EOF
 )"
 
-add_zone_file db.65.168.192 "$(cat << 'EOF'
+add_zone_file db.6.168.192 "$(cat << 'EOF'
 $TTL    604800
 @       IN      SOA     it-sirius.any. admin.it-sirius.any. (
                               1
@@ -154,12 +139,12 @@ $TTL    604800
                          604800 )
 ;
 @       IN      NS      first-srv.it-sirius.any.
-2       IN      PTR     first-rtr.it-sirius.any.
-3       IN      PTR     first-srv.it-sirius.any.
+1       IN      PTR     second-rtr.it-sirius.any.
+2       IN      PTR     second-srv.it-sirius.any.
 EOF
 )"
 
-add_zone_file db.66.168.192 "$(cat << 'EOF'
+add_zone_file db.100.168.192 "$(cat << 'EOF'
 $TTL    604800
 @       IN      SOA     it-sirius.any. admin.it-sirius.any. (
                               1
@@ -169,7 +154,22 @@ $TTL    604800
                          604800 )
 ;
 @       IN      NS      first-srv.it-sirius.any.
-2       IN      PTR     first-rtr.it-sirius.any.
+1       IN      PTR     first-rtr.it-sirius.any.
+2       IN      PTR     first-srv.it-sirius.any.
+EOF
+)"
+
+add_zone_file db.200.168.192 "$(cat << 'EOF'
+$TTL    604800
+@       IN      SOA     it-sirius.any. admin.it-sirius.any. (
+                              1
+                         604800
+                          86400
+                        2419200
+                         604800 )
+;
+@       IN      NS      first-srv.it-sirius.any.
+1       IN      PTR     first-rtr.it-sirius.any.
 14      IN      PTR     first-cli.it-sirius.any.
 EOF
 )"

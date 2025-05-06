@@ -94,8 +94,9 @@ first-cli       IN      A       192.168.200.14
 second-rtr      IN      A       172.16.5.2
 second-rtr      IN      A       192.168.6.1
 second-srv      IN      A       192.168.6.2
-moodle          IN      CNAME   first-rtr.it-sirius.any.
-wiki            IN      CNAME   first-rtr.it-sirius.any.
+moodle          IN      CNAME   first-srv.it-sirius.any.
+wiki            IN      CNAME   second-srv.it-sirius.any.
+mon          IN      CNAME   first-srv.it-sirius.any.
 @       IN      AAAA    ::1
 EOF
 )"
