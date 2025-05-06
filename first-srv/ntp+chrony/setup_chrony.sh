@@ -16,7 +16,7 @@ cp /etc/chrony/chrony.conf /etc/chrony/chrony.conf.bak
 
 sed -i '/^server/d' /etc/chrony/chrony.conf
 
-echo "server 172.16.4.2 iburst" >> /etc/chrony/chrony.conf
+echo "server 192.168.65.2 iburst" >> /etc/chrony/chrony.conf
 
 systemctl restart chrony
 
